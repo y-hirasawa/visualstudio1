@@ -1,0 +1,33 @@
+name: Rust CI
+
+# 実行するタイミングを指定（mainブランチへのpushおよびプルリクエスト時）
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# 実行環境の設定
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. リポジトリのコードをチェックアウト
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. Rust ツールチェーンのセットアップ（キャッシュ処理等も自動で行われます）
+    - name: Set up Rust
+      uses: dtolnay/rust-toolchain@stable
+
+    # 3. コードのビルド
+    - name: Build
+      run: cargo build --verbose
+
+    # 4. テストの実行
+    - name: Run tests
+      run: cargo test --verbose
